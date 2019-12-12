@@ -33,6 +33,7 @@
 
 ;;; Code:
 (require 'cc-vars)
+(require 'compile)
 
 ;;; Customization
 
@@ -48,10 +49,22 @@
 
 
 ;;; Internal functions
+(define-compilation-mode p3-compilation-mode "p3-compilation"
+  "P3-mode specific `compilation-mode' derivative."
+  (setq-local compilation-scroll-output t)
+  (require 'ansi-color))
+
+(defun p3--compile (cmd)
+  "Run a P3 CMD in cli-compilation-mode."
+  (let ((cmd (concat "processing-java --sketch=" default-directory " " cmd)))
+    (save-some-buffers (not compilation-ask-about-save)
+                       (lambda () default-directory))
+    (compilation-start cmd 'p3-compilation-mode)))
+
 (defun p3--runcmd (cmd &rest path)
   "Run arduino-cli CMD in PATH (if provided) and print as message."
   (let* ((default-directory (if path (car path) default-directory))
-         (cmd (concat "processing-java sketch=" default-directory " " cmd))
+         (cmd (concat "processing-java --sketch=" default-directory " " cmd))
          (out (shell-command-to-string cmd)))
     (message out)))
 
@@ -60,22 +73,22 @@
 (defun p3-run ()
   "Preprocess, compile, and run a sketch."
   (interactive)
-  (p3--runcmd "--run"))
+  (p3--compile "--run"))
 
 (defun p3-build ()
   "Preprocess and compile a sketch into .class files."
   (interactive)
-  (p3--runcmd "--build"))
+  (p3--compile "--build"))
 
 (defun p3-present ()
   "Preprocess, compile, and run a sketch in presentation mode."
   (interactive)
-  (p3--runcmd "--present"))
+  (p3--compile "--present"))
 
 (defun p3-export ()
   "Export a sketch."
   (interactive)
-  (p3--runcmd "--present"))
+  (p3--compile "--present"))
 
 
 ;;; Minor mode
