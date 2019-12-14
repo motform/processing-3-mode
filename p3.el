@@ -3,7 +3,7 @@
 ;; Copyright © 2019
 
 ;; Author: Love Lagerkvist
-;; URL: https://github.com/motform/arduino-cli-mode
+;; URL: https://github.com/motform/p3-mode
 ;; Package-Requires: ((emacs "25"))
 ;; Created: 2019-11-16
 ;; Keywords: extensions processing
@@ -28,7 +28,7 @@
 ;;; Commentary:
 
 ;; This package contains a wrapper for the Processing 3 command line tool.
-;; It requires P3 with CLI tools enabled, which can be installed through
+;; It requires P3 with CLI tools enabled, which can be installed from
 ;; https://github.com/processing/processing/wiki/Command-Line
 
 ;;; Code:
@@ -88,7 +88,7 @@
 (defun p3-export ()
   "Export a sketch."
   (interactive)
-  (p3--compile "--present"))
+  (p3--compile "--export"))
 
 
 ;;; Minor mode
@@ -120,17 +120,7 @@
   (setq-local indent-tabs-mode nil)
   (c-set-offset 'substatement-open '0))
 
-;; TODO add font-lock from ptrv's mode?
-
 (add-to-list 'auto-mode-alist '("\\.pde$" . processing-mode))
-
-;; (define-minor-mode p3-mode
-;;   "Processing 3 integration for Emacs."
-;;   :lighter " p3-mode"
-;;   :keymap p3-mode-map
-;;   :group 'p3
-;;   :require 'p3)
-
 
 (provide 'p3-mode)
 ;;; p3.el ends here
