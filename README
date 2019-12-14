@@ -1,3 +1,0 @@
-# p3-mode
-
-A major mode for Processing 3, using the p3 command line tools. Semi-forked from [ptrv’s processing2-mode](https://github.com/ptrv/processing2-emacs), which seems to have some problems with P3.
