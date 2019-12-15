@@ -115,12 +115,9 @@
   java-mode "p3"
   "Major mode for Processing 3.
 \\{java-mode-map}"
-  (setq-local c-basic-offset 2)
-  (setq-local tab-width 2)
-  (setq-local indent-tabs-mode nil)
   (c-set-offset 'substatement-open '0))
 
-(add-to-list 'auto-mode-alist '("\\.pde$" . processing-mode))
+(add-to-list 'auto-mode-alist '("\\.pde$" . p3-mode))
 
 (provide 'p3-mode)
 ;;; p3.el ends here
