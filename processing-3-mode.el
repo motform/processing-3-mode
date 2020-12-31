@@ -29,9 +29,13 @@
 
 ;;; Commentary:
 
-;; This package contains a wrapper for the Processing 3 command line tool.
+;; This package is a minimalist Processing 3 mode that also contains a
+;; wrapper for the `processing-java` command line tool.
+;;
 ;; It requires P3 with CLI tools enabled, which can be installed from
 ;; https://github.com/processing/processing/wiki/Command-Line
+;;
+;; Flags are yet to be supported, ditto command line arguments.
 
 ;;; Code:
 (require 'cc-vars)
@@ -85,10 +89,11 @@
   (processing-3--compile "--export"))
 
 
-;;; Minor mode
+;;; Major mode
 (defvar processing-3-command-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "r") #'processing-3-run)
+    (define-key map (kbd "c") #'processing-3-run)         ; for those of us used to C-c.
     (define-key map (kbd "b") #'processing-3-build)
     (define-key map (kbd "p") #'processing-3-present)
     (define-key map (kbd "e") #'processing-3-export)
