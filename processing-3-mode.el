@@ -1,4 +1,4 @@
-;;; processing-3-mode.el --- arduino-cli command wrapper -*- lexical-binding: t -*-
+;;; processing-3-mode.el --- A minimalist processing-3 mode -*- lexical-binding: t -*-
 
 ;; Copyright © 2019
 
@@ -7,7 +7,7 @@
 ;; URL: https://github.com/motform/processing-3-mode
 ;; Package-Requires: ((emacs "25"))
 ;; Created: 2019-11-16
-;; Updated: 2020-12-31
+;; Version: 2020-12-31
 ;; Keywords: extensions processing
 
 ;; This file is NOT part of GNU Emacs.
@@ -30,7 +30,7 @@
 ;;; Commentary:
 
 ;; This package is a minimalist Processing 3 mode that also contains a
-;; wrapper for the `processing-java` command line tool.
+;; wrapper for the `processing-java' command line tool.
 ;;
 ;; It requires P3 with CLI tools enabled, which can be installed from
 ;; https://github.com/processing/processing/wiki/Command-Line
@@ -38,25 +38,24 @@
 ;; Flags are yet to be supported, ditto command line arguments.
 
 ;;; Code:
-(require 'cc-vars)
 (require 'compile)
 
 ;;; Customization
 
 (defgroup processing-3 nil
-  "Processing 3 functions and settings."
+  "Processing-3-mode functions and settings."
   :group 'tools
   :prefix "processing-3-")
 
 (defcustom processing-3-mode-keymap-prefix (kbd "C-c C-p")
-  "Arduino-cli keymap prefix."
+  "Processing-3-mode keymap prefix."
   :group 'processing-3
   :type 'string)
 
 
 ;;; Internal functions
 (define-compilation-mode processing-3-compilation-mode "processing-3-compilation"
-  "Processing-3-mode specific `compilation-mode' derivative."
+  "Processing-3-mode specific 'compilation-mode' derivative."
   (setq-local compilation-scroll-output t)
   (require 'ansi-color))
 
@@ -98,14 +97,14 @@
     (define-key map (kbd "p") #'processing-3-present)
     (define-key map (kbd "e") #'processing-3-export)
     map)
-  "Keymap for processing-3-mode commands after `processing-3-mode-keymap-prefix'.")
+  "Keymap for `processing-3-mode' commands after `processing-3-mode-keymap-prefix'.")
 (fset 'processing-3-command-map processing-3-command-map)
 
 (defvar processing-3-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map processing-3-mode-keymap-prefix 'processing-3-command-map)
     map)
-  "Keymap for processing-3-mode.")
+  "Keymap for `processing-3-mode'.")
 
 
 ;;;###autoload
