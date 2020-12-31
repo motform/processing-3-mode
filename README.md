@@ -1,7 +1,7 @@
-# p3-mode
+# processing-3-mode
 
-A major mode for Processing 3, using the p3 command line tools. It is
-not based of ptrv’s far more sophisticated [processing2-mode](https://github.com/ptrv/processing2-emacs),
+A very simple major mode for Processing 3, using the p3 command line tools. 
+It is not based of ptrv’s far more sophisticated [processing2-mode](https://github.com/ptrv/processing2-emacs),
 as it was not to keen on working with Processing 3. 
 
 
@@ -38,8 +38,8 @@ The following keybindings are provided out of the box.
 
 ## Limitations
 
-* Unlike ptrv’s processing-mode, p3-mode does not currently come with Company support nor snippets.
-* The mode does not explicitly interact with Processing’s sketchbook, which means you can run .pde files freely on the file system.
+* Unlike ptrv’s processing-mode, processing-3-mode does not currently come with Company support nor snippets.
+* The mode does not explicitly interact with Processing’s sketchbook, which means you can run .pde files freely on the file system, pre-supposing that you follow their limitations (a sketch has to have a valid file name, mirrored in its dir).
 * There is currently no way to install libraries from the cli tool, and thus no way to do that from within Emacs.
 * Outputting to a directory other than the current one is not supported.
-
+* There is only support for running Processing in Java mode (I could make it a minor mode for `processeing-mode` comparability, if that would be of use to anyone, open an issue!).
