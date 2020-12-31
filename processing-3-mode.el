@@ -1,11 +1,13 @@
-;;; arduino-cli.el --- arduino-cli command wrapper -*- lexical-binding: t -*-
+;;; processing-3-mode.el --- arduino-cli command wrapper -*- lexical-binding: t -*-
 
 ;; Copyright © 2019
 
 ;; Author: Love Lagerkvist
-;; URL: https://github.com/motform/p3-mode
+;; Package: processing-3-mode
+;; URL: https://github.com/motform/processing-3-mode
 ;; Package-Requires: ((emacs "25"))
 ;; Created: 2019-11-16
+;; Updated: 2020-12-31
 ;; Keywords: extensions processing
 
 ;; This file is NOT part of GNU Emacs.
@@ -37,79 +39,78 @@
 
 ;;; Customization
 
-(defgroup p3 nil
+(defgroup processing-3 nil
   "Processing 3 functions and settings."
   :group 'tools
-  :prefix "p3-")
+  :prefix "processing-3-")
 
-(defcustom p3-mode-keymap-prefix (kbd "C-c C-p")
+(defcustom processing-3-mode-keymap-prefix (kbd "C-c C-p")
   "Arduino-cli keymap prefix."
-  :group 'p3
+  :group 'processing-3
   :type 'string)
 
 
 ;;; Internal functions
-(define-compilation-mode p3-compilation-mode "p3-compilation"
-  "P3-mode specific `compilation-mode' derivative."
+(define-compilation-mode processing-3-compilation-mode "processing-3-compilation"
+  "Processing-3-mode specific `compilation-mode' derivative."
   (setq-local compilation-scroll-output t)
   (require 'ansi-color))
 
-(defun p3--compile (cmd)
-  "Run a P3 CMD in cli-compilation-mode."
+(defun processing-3--compile (cmd)
+  "Run a Processing-3 CMD in cli-compilation-mode."
   (let ((cmd (concat "processing-java --sketch=" (shell-quote-argument default-directory) " " cmd)))
     (save-some-buffers (not compilation-ask-about-save)
                        (lambda () default-directory))
-    (compilation-start cmd 'p3-compilation-mode)))
+    (compilation-start cmd 'processing-3-compilation-mode)))
 
 ;;; User commands
-(defun p3-run ()
+(defun processing-3-run ()
   "Preprocess, compile, and run a sketch."
   (interactive)
-  (p3--compile "--run"))
+  (processing-3--compile "--run"))
 
-(defun p3-build ()
+(defun processing-3-build ()
   "Preprocess and compile a sketch into .class files."
   (interactive)
-  (p3--compile "--build"))
+  (processing-3--compile "--build"))
 
-(defun p3-present ()
+(defun processing-3-present ()
   "Preprocess, compile, and run a sketch in presentation mode."
   (interactive)
-  (p3--compile "--present"))
+  (processing-3--compile "--present"))
 
-(defun p3-export ()
+(defun processing-3-export ()
   "Export a sketch."
   (interactive)
-  (p3--compile "--export"))
+  (processing-3--compile "--export"))
 
 
 ;;; Minor mode
-(defvar p3-command-map
+(defvar processing-3-command-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "r") #'p3-run)
-    (define-key map (kbd "b") #'p3-build)
-    (define-key map (kbd "p") #'p3-present)
-    (define-key map (kbd "e") #'p3-export)
+    (define-key map (kbd "r") #'processing-3-run)
+    (define-key map (kbd "b") #'processing-3-build)
+    (define-key map (kbd "p") #'processing-3-present)
+    (define-key map (kbd "e") #'processing-3-export)
     map)
-  "Keymap for p3-mode commands after `p3-mode-keymap-prefix'.")
-(fset 'p3-command-map p3-command-map)
+  "Keymap for processing-3-mode commands after `processing-3-mode-keymap-prefix'.")
+(fset 'processing-3-command-map processing-3-command-map)
 
-(defvar p3-mode-map
+(defvar processing-3-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map p3-mode-keymap-prefix 'p3-command-map)
+    (define-key map processing-3-mode-keymap-prefix 'processing-3-command-map)
     map)
-  "Keymap for p3-mode.")
+  "Keymap for processing-3-mode.")
 
 
 ;;;###autoload
 ;; Borrowed from https://github.com/ptrv/processing2-emacs/
-(define-derived-mode p3-mode
-  java-mode "p3"
-  "Major mode for Processing 3.
-\\{java-mode-map}"
-  (c-set-offset 'substatement-open '0))
+(define-derived-mode processing-3-mode
+  java-mode "Processing 3"
+  "Major mode for Processing 3. Provides convenience functions to use the `processing-java' cli.
+\n\\{processing-3-mode-map}")
 
-(add-to-list 'auto-mode-alist '("\\.pde$" . p3-mode))
+(add-to-list 'auto-mode-alist '("\\.pde$" . processing-3-mode))
 
-(provide 'p3-mode)
-;;; p3.el ends here
+(provide 'processing-3-mode)
+;;; processing-3-mode.el ends here
