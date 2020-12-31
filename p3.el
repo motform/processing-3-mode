@@ -56,7 +56,7 @@
 
 (defun p3--compile (cmd)
   "Run a P3 CMD in cli-compilation-mode."
-  (let ((cmd (concat "processing-java --sketch=" default-directory " " cmd)))
+  (let ((cmd (concat "processing-java --sketch=" (shell-quote-argument default-directory) " " cmd)))
     (save-some-buffers (not compilation-ask-about-save)
                        (lambda () default-directory))
     (compilation-start cmd 'p3-compilation-mode)))
