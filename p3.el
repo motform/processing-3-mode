@@ -61,14 +61,6 @@
                        (lambda () default-directory))
     (compilation-start cmd 'p3-compilation-mode)))
 
-(defun p3--runcmd (cmd &rest path)
-  "Run arduino-cli CMD in PATH (if provided) and print as message."
-  (let* ((default-directory (if path (car path) default-directory))
-         (cmd (concat "processing-java --sketch=" default-directory " " cmd))
-         (out (shell-command-to-string cmd)))
-    (message out)))
-
-
 ;;; User commands
 (defun p3-run ()
   "Preprocess, compile, and run a sketch."
