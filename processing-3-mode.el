@@ -34,8 +34,6 @@
 ;;
 ;; It requires P3 with CLI tools enabled, which can be installed from
 ;; https://github.com/processing/processing/wiki/Command-Line
-;;
-;; Flags are yet to be supported, ditto command line arguments.
 
 ;;; Code:
 (require 'compile)
@@ -47,10 +45,11 @@
   :group 'tools
   :prefix "processing-3-")
 
-(defcustom processing-3-mode-keymap-prefix (kbd "C-c C-p")
-  "Processing-3-mode keymap prefix."
+(defcustom processing-3-compile-cmd 'run
+  "Set the command to run with `processing-3-mode-keymap-prefix+c'.
+'run (default), 'build, 'present or 'export."
   :group 'processing-3
-  :type 'string)
+  :type 'symbol)
 
 (defcustom processing-3-force nil
   "Set the processing-java `--force' flag.
@@ -134,28 +133,25 @@ Specify the platform (export to application only)."
   (interactive)
   (processing-3--compile "--export"))
 
+(defun processing-3-compile-cmd ()
+  "Run `processing-java' with `processing-3-compile-cmd' (default --run)."
+  (interactive)
+  (processing-3--compile (concat "--" (symbol-name processing-3-compile-cmd))))
+
 
 ;;; Major mode
-(defvar processing-3-command-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "r") #'processing-3-run)
-    (define-key map (kbd "c") #'processing-3-run)         ; for those of us used to C-c.
-    (define-key map (kbd "b") #'processing-3-build)
-    (define-key map (kbd "p") #'processing-3-present)
-    (define-key map (kbd "e") #'processing-3-export)
-    map)
-  "Keymap for `processing-3-mode' commands after `processing-3-mode-keymap-prefix'.")
-(fset 'processing-3-command-map processing-3-command-map)
-
 (defvar processing-3-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map processing-3-mode-keymap-prefix 'processing-3-command-map)
+    (define-key map "\C-c\C-r"  #'processing-3-run)
+    (define-key map "\C-c\C-c"  #'processing-3-compile-cmd)
+    (define-key map "\C-c\C-b"  #'processing-3-build)
+    (define-key map "\C-c\C-p"  #'processing-3-present)
+    (define-key map "\C-c\C-e"  #'processing-3-export)
     map)
   "Keymap for `processing-3-mode'.")
 
 
 ;;;###autoload
-;; Borrowed from https://github.com/ptrv/processing2-emacs/
 (define-derived-mode processing-3-mode
   java-mode "Processing 3"
   "Major mode for Processing 3. Provides convenience functions to use the `processing-java' cli.
