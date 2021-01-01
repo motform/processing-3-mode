@@ -12,15 +12,23 @@ information on those, read the official documentation.](https://github.com/proce
 
 Until the package is published on melpa, I recommend using [straight.el](https://github.com/raxod502/straight.el).
 
-
-## Customization
-
 If you want p3-mode to automatically start when opening `.pde` files, 
 add the following snippet to your init file.
 
 ```elisp
 (add-to-list 'auto-mode-alist '("\\.pde$" . p3-mode))
 ```
+
+
+## Customization
+
+You can enable any of the flags supported by `processing-java`.
+
+| Flag                                 | Values                                           |
+| ---                                  | ---                                              |
+| `processing-3-no-java`               | `nil` (default), `t`                             |
+| `processing-3-force`                 | `nil` (default), `t`                             |
+| `processing-3-platform`              | `nil` (default), `'linux`, `'macosx`, `'windows` |
 
 
 ## Keymap

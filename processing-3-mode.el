@@ -39,9 +39,9 @@
 
 ;;; Code:
 (require 'compile)
+(require 'subr-x)
 
 ;;; Customization
-
 (defgroup processing-3 nil
   "Processing-3-mode functions and settings."
   :group 'tools
@@ -52,6 +52,33 @@
   :group 'processing-3
   :type 'string)
 
+(defcustom processing-3-force nil
+  "Set the processing-java `--force' flag.
+nil (default) or t.
+\nFrom the man page:
+The sketch will not build if the output folder
+already exists, because the contents will be replaced.
+This option erases the folder first.  Use with extreme caution!"
+  :group 'processing-3
+  :type 'boolean
+  :options '(t nil))
+
+(defcustom processing-3-no-java nil
+  "Set the processing-java `--no-java' flag.
+nil (default) or t.
+\nFrom the man page:
+Do not embed Java.  Use at your own risk!"
+  :group 'processing-3
+  :type 'boolean)
+
+(defcustom processing-3-platform nil
+  "Set the processing-java `--export' flag.
+nil (default), 'windows, 'macosx or 'linux.
+\nFrom the man page:
+Specify the platform (export to application only)."
+  :group 'processing-3
+  :type 'symbol)
+
 
 ;;; Internal functions
 (define-compilation-mode processing-3-compilation-mode "processing-3-compilation"
@@ -59,12 +86,32 @@
   (setq-local compilation-scroll-output t)
   (require 'ansi-color))
 
+(defun processing-3--flags ()
+  "Add flags to `cmd', if set."
+  (string-join (list (when processing-3-no-java "--no-java")
+                     (when processing-3-force "--force"))
+               " "))
+
+(defun processing-3--platform-flag (cmd)
+  "Add the `--platform' if `processing-3-platform' is set and `CMD' is `--export'."
+  (when (and processing-3-platform (string-equal cmd "--export"))
+    (concat " --platform " (symbol-name processing-3-platform))))
+
+(defun processing-3--build-cmd (cmd)
+  "Build the cmd, where `CMD' is one of `run', `build', `present' or `export'."
+  (string-join (list "processing-java"
+                     (processing-3--flags)
+                     (concat "--sketch=" (shell-quote-argument default-directory))
+                     cmd
+                     (processing-3--platform-flag cmd))
+               " "))
+
 (defun processing-3--compile (cmd)
   "Run a Processing-3 CMD in cli-compilation-mode."
-  (let ((cmd (concat "processing-java --sketch=" (shell-quote-argument default-directory) " " cmd)))
-    (save-some-buffers (not compilation-ask-about-save)
-                       (lambda () default-directory))
-    (compilation-start cmd 'processing-3-compilation-mode)))
+  (save-some-buffers (not compilation-ask-about-save)
+                     (lambda () default-directory))
+  (compilation-start (processing-3--build-cmd cmd) 'processing-3-compilation-mode))
+
 
 ;;; User commands
 (defun processing-3-run ()
