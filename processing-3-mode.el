@@ -78,6 +78,14 @@ Specify the platform (export to application only)."
   :group 'processing-3
   :type 'symbol)
 
+(defcustom processing-3-args ""
+  "Set a string of args to pass to `processing-java', default none.
+For reference on how to use args:
+https://github.com/processing/processing/wiki/Command-Line#adding-command-line-arguments"
+  :group 'processing-3
+  :type 'string
+  :safe t)
+
 
 ;;; Internal functions
 (define-compilation-mode processing-3-compilation-mode "processing-3-compilation"
@@ -91,10 +99,12 @@ Specify the platform (export to application only)."
                      (when processing-3-force "--force"))
                " "))
 
-(defun processing-3--platform-flag (cmd)
-  "Add the `--platform' if `processing-3-platform' is set and `CMD' is `--export'."
-  (when (and processing-3-platform (string-equal cmd "--export"))
-    (concat " --platform " (symbol-name processing-3-platform))))
+(defun processing-3--trailing-args (cmd)
+  "Add `--platform' if `processing-3-platform' is set and `CMD' is `--export'.
+Otherwise, add whichever args are present in `processing-3-args'"
+  (if (and processing-3-platform (string-equal cmd "--export"))
+      (concat " --platform " (symbol-name processing-3-platform))
+    processing-3-args))
 
 (defun processing-3--build-cmd (cmd)
   "Build the cmd, where `CMD' is one of `run', `build', `present' or `export'."
@@ -102,7 +112,7 @@ Specify the platform (export to application only)."
                      (processing-3--flags)
                      (concat "--sketch=" (shell-quote-argument default-directory))
                      cmd
-                     (processing-3--platform-flag cmd))
+                     (processing-3--trailing-args cmd))
                " "))
 
 (defun processing-3--compile (cmd)

@@ -30,7 +30,22 @@ You can enable any of the flags supported by `processing-java`.
 | `processing-3-force`                 | `nil` (default), `t`                              |
 | `processing-3-platform`              | `nil` (default), `'linux`, `'macosx`, `'windows`  |
 | `processing-3-compile-key`           | `'run` (default), `'build`, `'present`, `'export` |
+| `processing-3-args`                  | `""` (default), any string                        |
 
+`processing-3-args` is a string used to add [command-line arguments](https://github.com/processing/processing/wiki/Command-Line#adding-command-line-arguments) when calling `processing-java`.
+As this is most likely file-dependent, it can be useful to add these using [buffer local variables](https://www.gnu.org/software/emacs/manual/html_node/elisp/Buffer_002dLocal-Variables.html#Buffer_002dLocal-Variables).
+Below is an example using the block quote syntax.
+
+```processing
+/* Local Variables:                   */
+/* mode: processing-3                 */
+/* processing-3-args: "300 400"       */
+/* End:                               */
+
+void setup() {
+
+// etc
+```
 
 ## Keymap
 
