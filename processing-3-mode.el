@@ -167,6 +167,7 @@ Otherwise, add whichever args are present in `processing-3-args'"
   "Major mode for Processing 3. Provides convenience functions to use the `processing-java' cli.
 \n\\{processing-3-mode-map}")
 
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.pde$" . processing-3-mode))
 
 (provide 'processing-3-mode)
